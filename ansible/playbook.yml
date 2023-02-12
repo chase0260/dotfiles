@@ -1,0 +1,47 @@
+---
+- name: Setup workstation
+  hosts: local
+  vars_files: vars.yml
+
+  tasks:
+  - name: "Install asdf plugins"
+    shell: asdf plugin-add {{ item.name }} || exit 0
+    loop: "{{ asdf_plugins }}"
+
+  - name: "Install asdf packages"
+    shell: asdf install {{ item.0.name }} {{ item.1 }}
+    with_subelements:
+      - "{{ asdf_plugins }}"
+      - versions
+
+  - name: "Install Helm plugins"
+    kubernetes.core.helm_plugin:
+      plugin_path: "{{ item }}"
+      state: present
+    loop: "{{ helm_plugins }}"
+
+  - name: Check for krew
+    stat: path=/$HOME/.krew
+    register: krew
+
+  - name: Install krew
+    shell: |
+      set -x; cd "$(mktemp -d)" &&
+      OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+      ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+      KREW="krew-${OS}_${ARCH}" &&
+      curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+      tar zxvf "${KREW}.tar.gz" &&
+      ./"${KREW}" install krew
+    when: not krew.stat.exists
+
+  - name: Get installed krew plugins
+    command: "kubectl krew list"
+    register: "krew_plugins"
+
+  - name: Install krew plugins
+    command: "kubectl krew install {{ item }}"
+    when: "item|string not in krew_plugins.stdout_lines"
+    with_items:
+      - df-pv
+      - ktop

@@ -1,0 +1,25 @@
+asdf_plugins:
+  - name: helm
+    versions:
+      - 3.10.1
+  - name: helmfile
+    versions:
+      - 0.147.0
+  - name: kubectl
+    versions:
+      - 1.24.0
+  - name: kubectx
+    versions:
+      - 0.9.4
+  - name: pre-commit
+    versions:
+      - 2.20.0
+  - name: terraform
+    versions:
+      - 1.1.5
+  - name: vault
+    versions:
+      - 1.11.3
+
+helm_plugins:
+  - https://github.com/databus23/helm-diff

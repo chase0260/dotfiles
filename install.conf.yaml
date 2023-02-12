@@ -1,0 +1,38 @@
+- clean: ['~']
+
+- create:
+    - $HOME/books
+    - $HOME/chase
+    - $HOME/rlr
+    - $HOME/.ssh
+
+- link:
+    $HOME/.zshrc: config/zshrc
+    $HOME/.zprofile: config/zprofile
+    $HOME/.tool-versions: config/tool-versions
+    $HOME/.gitconfig: config/gitconfig
+    $HOME/.gitignore: config/gitignore
+    $HOME/.ssh/config: config/ssh-config
+    $HOME/rlr/.gitconfig: config/rlr.gitconfig
+    $HOME/chase/.gitconfig: config/chase.gitconfig
+
+- shell:
+  - command: brew bundle install
+    description: Installing packages from homebrew
+    stdin: true
+    stdout: true
+    stderr: true
+    quiet: false
+  - [git submodule update --init --recursive, Installing submodules for dotbot]
+  - command: chmod +x ~/.dotfiles/ansible/ansible.sh
+    description:  Make ansible script executable
+    stdin: true
+    stdout: true
+    stderr: true
+    quiet: false
+  - command: ~/.dotfiles/ansible/ansible.sh
+    description: Installing packages using Ansible
+    stdin: true
+    stdout: true
+    stderr: true
+    quiet: false

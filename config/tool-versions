@@ -1,0 +1,7 @@
+kubectl 1.24.0
+pre-commit 2.20.0
+terraform 1.1.5
+vault 1.11.3
+kubectx 0.9.4
+helm 3.10.1
+helmfile 0.147.0

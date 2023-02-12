@@ -1,0 +1,8 @@
+# PATH
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Add krew to path
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+# Fig post block. Keep at the bottom of this file.
+[[ -f "$HOME/.fig/shell/zprofile.post.zsh" ]] && builtin source "$HOME/.fig/shell/zprofile.post.zsh"

@@ -1,0 +1,20 @@
+[user]
+	name = Parv Gupta
+
+[includeIf "gitdir:~/chase/"]
+    path = ~/chase/.gitconfig
+
+[includeIf "gitdir:~/rlr/"]
+    path = ~/rlr/.gitconfig
+
+[init]
+    defaultBranch = main
+
+[fetch]
+    prune = true
+
+[status]
+    short = true
+
+[core]
+    excludesFile = ~/.gitignore
